@@ -10,7 +10,7 @@ interface BoardData {
 	name: string;
 }
 
-const Board = (props: {
+const Boards = (props: {
 	data: BoardData[];
 }) => {
 
@@ -46,4 +46,4 @@ const Board = (props: {
 	)
 }
 
-export default Board;
+export default Boards;
