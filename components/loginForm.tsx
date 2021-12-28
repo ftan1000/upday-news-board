@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import * as React from 'react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
+import {useAuth} from '../src/authContext';
 
 const validationSchema = yup.object({
 	email: yup
@@ -14,12 +15,14 @@ const validationSchema = yup.object({
 
 const LoginForm = () => {
 
+	const { login } = useAuth();
+
 	const formik = useFormik({
 		initialValues: {email: ''},
 		validationSchema: validationSchema,
 		onSubmit: (values) => {
-			alert(JSON.stringify(values, null, 2));
-		},
+			login({email: values.email});
+		}
 	});
 
 	return (
@@ -38,6 +41,7 @@ const LoginForm = () => {
 					fullWidth
 					id="email"
 					label="Enter your email address"
+					aria-label="Enter your email address"
 					name="email"
 					autoComplete="email"
 					placeholder="example@email.com"
