@@ -9,19 +9,13 @@ const NewsItem = (props: {
 	const news: News = props.data;
 
 	return (
-
-		<Box component='div' sx={{border: 1, padding: 5}} key={news.id}>
-			<div>id:{news.id}</div>
-			<div>boardId:{news.boardId}</div>
-			<div>author:{news.author}</div>
-			<div>title:{news.title}</div>
-			<div>description:{news.description}</div>
-			<div>CreatedAt:{news.CreatedAt}</div>
-			<div>status:{news.status}</div>
-			<div>imageURL:{news.imageURL}</div>
+		<Box component='div' sx={{border: 1, padding: 3, margin: 2}} key={news.id}>
+			<h1>{news.title}</h1>
 			<img src={news.imageURL} alt={news.title}/>
+			<div>{news.description}</div>{/* TODO: Truncate description here when too long */}
+			<hr />
+			<sub>{news.author} - {news.CreatedAt}</sub> {/* TODO: Better date/time format */}
 		</Box>
-
 	)
 }
 
