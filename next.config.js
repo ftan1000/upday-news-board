@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  reactStrictMode: true,
+    reactStrictMode: true,
+    env: {
+        API_HOST: 'http://localhost:8080'
+    }
 };
