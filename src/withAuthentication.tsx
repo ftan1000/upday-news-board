@@ -6,7 +6,7 @@ import {useAuth} from './authContext';
 type withAuthenticationFn = (Component: FC) => FC;
 
 const withAuthentication: withAuthenticationFn = (Component) => {
-	const Authenticated: FC = (): JSX.Element | null => {
+	const Authenticated: FC = (props): JSX.Element | null => {
 		const { user } = useAuth();
 		const router = useRouter();
 
@@ -14,7 +14,7 @@ const withAuthentication: withAuthenticationFn = (Component) => {
 			if (!user || !user.email) router.push("/login");
 		});
 
-		return user && user.email ? <Component /> : null;
+		return user && user.email ? <Component {...props} /> : null;
 	};
 
 	return Authenticated;
