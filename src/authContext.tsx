@@ -34,13 +34,13 @@ export function AuthProvider({ children }: Props) {
 	};
 
 	const logout = () => {
-		setUser({ email: ''});
+		setUser({});
 	};
 
 	const value = {
 		user,
 		login,
-		logout
+		logout,
 	};
 
 	return (
