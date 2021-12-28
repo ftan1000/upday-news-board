@@ -5,14 +5,14 @@ export type User = {
 }
 
 type authContextType = {
-	user: {};
+	user: User;
 	login: (user: User) => void;
 	logout: () => void;
 };
 
 const authContextDefaultValues: authContextType = {
 	user: {},
-	login: (User) => {},
+	login: () => {},
 	logout: () => {},
 };
 
