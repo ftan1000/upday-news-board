@@ -4,17 +4,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
-
-interface BoardData {
-	id: string;
-	name: string;
-}
+import {Board} from '../src/types';
 
 const Boards = (props: {
-	data: BoardData[];
+	data: Board[];
 }) => {
 
-	const data: BoardData[] = props.data;
+	const data: Board[] = props.data;
 
 	return (
 		<>
