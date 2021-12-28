@@ -5,7 +5,7 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {GetServerSideProps, NextPage} from 'next';
 import withAuthentication from '../src/withAuthentication';
 import Header from '../components/header';
-import Board from '../components/board';
+import Boards from '../components/boards';
 
 const theme = createTheme();
 
@@ -17,7 +17,7 @@ const Home: NextPage = (props) => {
 				<CssBaseline/>
 				<Header />
 				<main>
-					<Board data={props.data}/>
+					<Boards data={props.data}/>
 				</main>
 			</Container>
 		</ThemeProvider>
