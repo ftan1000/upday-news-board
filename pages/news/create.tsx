@@ -24,7 +24,7 @@ export default function CreateNews() {
 		console.log('error during fetch POST', {url: url, body: values, error: error})
 	}
 
-	const initialLoginFormData: NewsFormType = {
+	const initialNewsFormData: NewsFormType = {
 		// TODO: use withAuthentication to guarantee that user is set
 		author: (user && user.email ? user.email : 'unknown@test.com'),
 		title: '',
@@ -52,12 +52,10 @@ export default function CreateNews() {
 				<Header/>
 				<main>
 					<h1>Create news article</h1>
-
 					<NewsForm
-						initialValues={initialLoginFormData}
+						initialValues={initialNewsFormData}
 						validationSchema={generateNewsFormValidationSchema()}
 						onSubmit={submitNewsPostRequest}/>
-
 				</main>
 			</Container>
 		</ThemeProvider>
