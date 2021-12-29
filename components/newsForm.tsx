@@ -11,6 +11,7 @@ import {FormikConfig, FormikValues} from 'formik/dist/types';
 import {BoardList, NewsFormType} from '../src/types';
 import {AnySchema} from 'yup';
 import {OptionalObjectSchema} from 'yup/lib/object';
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';
 
 const typedKeys = <T extends Record<string, unknown>>(obj: T) => Object.keys(obj).map((key) => key as keyof T);
 
@@ -18,6 +19,7 @@ type NewsFormProps = {
 	initialValues: NewsFormType,
 	validationSchema: OptionalObjectSchema<Record<string, AnySchema>>,
 	onSubmit: (values: FormikValues) => void;
+	mode: 'create' | 'edit';
 };
 
 export default function NewsForm(props: NewsFormProps) {
@@ -35,6 +37,13 @@ export default function NewsForm(props: NewsFormProps) {
 
 				<form onSubmit={formik.handleSubmit}>
 					<Grid container spacing={3}>
+
+						{ formik.values.status == 'archived' && (
+							<Grid item xs={12}>
+								<InfoTwoToneIcon /> Archived news cannot be updated.
+							</Grid>
+						)}
+
 						<Grid item xs={12}>
 							<TextField
 								required
@@ -80,6 +89,7 @@ export default function NewsForm(props: NewsFormProps) {
 								helperText={formik.touched.imageURL && formik.errors.imageURL}
 							/>
 						</Grid>
+						{ props.mode === 'create' && (
 						<Grid item xs={12} sm={6}>
 							<FormControl sx={{m: 1, minWidth: 120}}>
 								<InputLabel id="boardId-label">Board</InputLabel>
@@ -98,9 +108,15 @@ export default function NewsForm(props: NewsFormProps) {
 								</Select>
 							</FormControl>
 						</Grid>
-						<Grid item xs={12}>
-							<Button type="submit" variant="contained" fullWidth>Submit</Button>
-						</Grid>
+						)}
+						{ formik.values.status !== 'archived' && (
+							<Grid item xs={12}>
+								<Button type="submit" variant="contained" fullWidth>
+									{ props.mode === 'create' && ('Submit')}
+									{ props.mode === 'edit' && ('Update')}
+								</Button>
+							</Grid>
+						)}
 					</Grid>
 				</form>
 			)}
