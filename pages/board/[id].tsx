@@ -41,6 +41,7 @@ function TabPanel(props: TabPanelProps) {
 
 const Board: NextPage = (props) => {
 
+	const data = props.data;
 	const [selectedTabId, setSelectedTabId] = React.useState(0);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -53,41 +54,48 @@ const Board: NextPage = (props) => {
 				<CssBaseline/>
 				<Header/>
 				<main>
-					<Box component='div' sx={{borderBottom: 1, borderColor: 'divider'}}>
-						<Tabs value={selectedTabId} onChange={handleChange} aria-label="News Status">
-							<Tab label='Drafts'/>
-							<Tab label='Published'/>
-							<Tab label='Archives'/>
-						</Tabs>
-					</Box>
-
 					{
-						props.data ?
+						data && !data.hasError ?
 							<>
+								<Box component='div' sx={{borderBottom: 1, borderColor: 'divider'}}>
+									<Tabs value={selectedTabId} onChange={handleChange} aria-label="News Status">
+										<Tab label='Drafts'/>
+										<Tab label='Published'/>
+										<Tab label='Archives'/>
+									</Tabs>
+								</Box>
 								<TabPanel value={selectedTabId} index={0}>{
-									props.data.drafts && props.data.drafts.length > 0 ?
-										<NewsList data={props.data.drafts}/>
+									data.drafts && data.drafts.length > 0 ?
+										<NewsList data={data.drafts}/>
 										:
 										<NoNews/>
 								}
 								</TabPanel>
 								<TabPanel value={selectedTabId} index={1}>{
-									props.data.published && props.data.published.length > 0 ?
-										<NewsList data={props.data.published}/>
+									data.published && data.published.length > 0 ?
+										<NewsList data={data.published}/>
 										:
 										<NoNews/>
 								}
 								</TabPanel>
 								<TabPanel value={selectedTabId} index={2}>{
-									props.data.archives && props.data.archives.length > 0 ?
-										<NewsList data={props.data.archives}/>
+									data.archives && data.archives.length > 0 ?
+										<NewsList data={data.archives}/>
 										:
 										<NoNews/>
 								}
 								</TabPanel>
 							</>
 							:
-							'Empty board'
+							<div>
+								<h1>Error</h1>
+								{
+									(data && data.hasError && data.errorMessage ) ?
+										<code>{data.errorMessage}</code>
+										:
+										<div>No data received</div>
+								}
+							</div>
 					}
 				</main>
 			</Container>
@@ -99,7 +107,16 @@ const Board: NextPage = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
 	const res = await fetch(process.env.API_HOST + '/v1/board/' + params.id + '/news')
-	const data = await res.json()
+	let data;
+	try {
+		data = await res.json()
+	} catch (error) {
+		data = {
+			hasError: true,
+			errorMessage: error.message || 'Unknown error'
+		};
+		return {props: {data}}
+	}
 
 	if (!data) {
 		return {
