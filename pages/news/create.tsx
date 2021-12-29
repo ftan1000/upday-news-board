@@ -6,8 +6,8 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {FormikValues} from 'formik';
 import {useAuth} from '../../src/authContext';
 import {BoardList, NewsFormType} from '../../src/types';
-import NewsForm from '../../components/newsForm';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
+import NewsForm from '../../components/newsForm';
 
 const theme = createTheme();
 
@@ -55,7 +55,9 @@ export default function CreateNews() {
 					<NewsForm
 						initialValues={initialNewsFormData}
 						validationSchema={generateNewsFormValidationSchema()}
-						onSubmit={submitNewsPostRequest}/>
+						onSubmit={submitNewsPostRequest}
+						mode='create'
+					/>
 				</main>
 			</Container>
 		</ThemeProvider>
