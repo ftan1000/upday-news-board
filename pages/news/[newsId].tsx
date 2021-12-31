@@ -5,7 +5,7 @@ import Header from '../../components/header';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {FormikValues} from 'formik';
 import {GetServerSideProps, NextPage} from 'next';
-import {BoardList, NewsFormType, StatusList} from '../../src/types';
+import {NewsFormType, StatusList} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
 import Button from '@mui/material/Button';
@@ -28,7 +28,7 @@ const UpdateNews: NextPage = (props) => {
 		// TODO: Implement actual handling
 		// Important: status may have the value 400 or 404
 		console.log('fetch successful', {method: method, body: values, status: status, newState: newState})
-		router.push('/news/'+news.id+'?newState='+newState);
+		router.push('/news/' + news.id + '?newState=' + newState);
 	}
 	const handleError = (method: string, url: string, values: {}, error: {}) => {
 		// TODO: Implement actual error handling
@@ -73,7 +73,7 @@ const UpdateNews: NextPage = (props) => {
 			method: method,
 		})
 			.then(res => res.status)
-			.then(status => handleSuccess(method, {}, String(status)))
+			.then(status => handleSuccess(method, {}, String(status), 'deleted'))
 			.catch(error => handleError(method, url, {}, error));
 	}
 
@@ -81,23 +81,23 @@ const UpdateNews: NextPage = (props) => {
 	const submitNewsPutRequest = (values: FormikValues) => {
 		console.log('submitNewsPutRequest start');
 		const url = process.env.API_HOST + '/v1/news';
+		const method = 'PUT';
 		fetch(url, {
-			method: 'PUT',
+			method: method,
 			body: JSON.stringify(values)
 		})
 			.then(res => res.json())
-			.then(json => handleSuccess(values, json))
-			.catch(error => handleError(url, values, error));
+			.then(json => handleSuccess(method, values, json, 'updated'))
+			.catch(error => handleError(method, url, values, error));
 	}
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="md">
 				<CssBaseline/>
-				<Header/>
+				<Header boardId={news.boardId} title={news.title}/>
 				<main>
-					<h1>News article</h1>
-					<h6>Board: {BoardList[news.boardId]} / Status: {StatusList[news.status]} / Author: {news.author} / ID: {news.id}</h6>
+					<h6>Status: {StatusList[news.status]} | Author: {news.author}</h6>
 
 					<NewsForm
 						initialValues={initialNewsFormData}
@@ -109,10 +109,14 @@ const UpdateNews: NextPage = (props) => {
 					{news.status !== 'archived' && (
 						<div data-testid='div-more-actions'>
 							<h2>More actions</h2>
-							<Button type="submit" fullWidth variant="outlined" sx={{mt: 2}} startIcon={<ModeIcon />} onClick={handleDraft}>Draft</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="secondary" startIcon={<ArchiveTwoToneIcon />} onClick={handleArchive}>Archive</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="error" startIcon={<DeleteIcon />} onClick={handleDelete}>Delete</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="success" startIcon={<PostAddTwoToneIcon />} onClick={handlePublish}>Publish</Button>
+							<Button type="submit" fullWidth variant="outlined" sx={{mt: 2}} startIcon={<ModeIcon/>}
+											onClick={handleDraft}>Draft</Button>
+							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="secondary"
+											startIcon={<ArchiveTwoToneIcon/>} onClick={handleArchive}>Archive</Button>
+							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="error" startIcon={<DeleteIcon/>}
+											onClick={handleDelete}>Delete</Button>
+							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="success"
+											startIcon={<PostAddTwoToneIcon/>} onClick={handlePublish}>Publish</Button>
 						</div>
 					)}
 

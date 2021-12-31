@@ -8,8 +8,16 @@ import {AccountCircle} from '@mui/icons-material';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Box from '@mui/material/Box';
+import Link from 'next/link';
+import {BoardList} from '../src/types';
 
-const Header = () => {
+type HeaderProps = {
+	title?: string;
+	boardId?: string;
+	displayBreadcrumbs?: boolean;
+};
+
+const Header = (props: HeaderProps) => {
 
 	const {user, logout} = useAuth();
 
@@ -66,9 +74,38 @@ const Header = () => {
 						}
 					</Toolbar>
 				</AppBar>
+
+				{props.displayBreadcrumbs && (
+					<h1 data-testid="breadcrumbs">
+						<Link href="/" data-testid="breadcrumb-home">
+							<a>Home</a>
+						</Link>
+
+						{ props.boardId && (
+							<>
+								{' '}>{' '}
+								<Link href={'/board/' + props.boardId} data-testid="breadcrumb-board">
+									<a>{BoardList[props.boardId]}</a>
+								</Link>
+							</>
+						)}
+
+						{ props.title && (
+							<>
+								{' '}>{' '}
+								<em data-testid="breadcrumb-home">{props.title}</em>
+							</>
+						)}
+					</h1>
+				)}
+
 			</Box>
 		</header>
 	)
 }
+
+Header.defaultProps = {
+	displayBreadcrumbs: true
+};
 
 export default Header;

@@ -52,7 +52,7 @@ const Board: NextPage = (props) => {
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="md">
 				<CssBaseline/>
-				<Header/>
+				<Header boardId={props.boardId}/>
 				<main>
 					{
 						data && !data.hasError ?
@@ -106,7 +106,13 @@ const Board: NextPage = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
-	const res = await fetch(process.env.API_HOST + '/v1/board/' + params.id + '/news')
+	const boardId = params.id;
+	// Note for reviewer: Using params.id directly in fetchURL is a bit unsafe,
+	// but done here because of lack of time.
+	// Proper solution would be: params.id should be checked/mapped against a whitelist of valid boardIds.
+	const fetchURL = process.env.API_HOST + '/v1/board/' + boardId + '/news';
+	const res = await fetch(fetchURL)
+
 	let data;
 	try {
 		data = await res.json()
@@ -124,7 +130,7 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
 		}
 	}
 
-	return {props: {data}}
+	return {props: {data, boardId: boardId} }
 }
 
 // TODO export default withAuthentication(Board);
