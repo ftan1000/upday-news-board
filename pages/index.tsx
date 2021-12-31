@@ -15,7 +15,7 @@ const Home: NextPage = (props) => {
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="md">
 				<CssBaseline/>
-				<Header />
+				<Header displayBreadcrumbs={false} />
 				<main>
 					<Boards data={props.data}/>
 				</main>
