@@ -6,6 +6,7 @@ import {GetServerSideProps, NextPage} from 'next';
 import withAuthentication from '../src/withAuthentication';
 import Header from '../components/header';
 import Boards from '../components/boards';
+import LoggedInFooter from './loggedInFooter';
 
 const theme = createTheme();
 
@@ -19,6 +20,7 @@ const Home: NextPage = (props) => {
 				<main>
 					<Boards data={props.data}/>
 				</main>
+				<LoggedInFooter />
 			</Container>
 		</ThemeProvider>
 	);

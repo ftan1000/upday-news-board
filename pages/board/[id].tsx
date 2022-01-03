@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import NewsList from '../../components/newsList';
 import NoNews from '../../components/noNews';
 import withAuthentication from '../../src/withAuthentication';
+import LoggedInFooter from '../loggedInFooter';
 
 const theme = createTheme();
 
@@ -99,6 +100,7 @@ const Board: NextPage = (props) => {
 							</div>
 					}
 				</main>
+				<LoggedInFooter />
 			</Container>
 		</ThemeProvider>
 	);
