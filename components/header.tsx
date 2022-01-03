@@ -19,7 +19,7 @@ type HeaderProps = {
 
 const Header = (props: HeaderProps) => {
 
-	const {user, logout} = useAuth();
+	const {user, logout, isAuthenticated} = useAuth();
 
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -39,7 +39,7 @@ const Header = (props: HeaderProps) => {
 						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 							News Board
 						</Typography>
-						{user && user.email && (
+						{isAuthenticated && (
 							<div>
 								{user.email}
 								<IconButton
