@@ -39,3 +39,5 @@ export const StatusList = {
 	published: 'Published',
 	archived: 'Archived'
 }
+
+export const typedKeys = <T extends Record<string, unknown>>(obj: T) => Object.keys(obj).map((key) => key as keyof T);

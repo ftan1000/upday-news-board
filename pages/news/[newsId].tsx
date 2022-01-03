@@ -8,12 +8,9 @@ import {GetServerSideProps, NextPage} from 'next';
 import {NewsFormType, StatusList} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
-import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeIcon from '@mui/icons-material/Mode';
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
-import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 import {useRouter} from 'next/router';
+import Alert, {AlertColor} from '@mui/material/Alert';
+import {Snackbar} from '@mui/material';
 
 const theme = createTheme();
 
@@ -23,6 +20,23 @@ const UpdateNews: NextPage = (props) => {
 
 	const news = props.data;
 	console.log('news',news);
+
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [openSnackbar, setOpenSnackbar] = React.useState(false);
+	const [severity, setSeverity] = React.useState<AlertColor>('success');
+
+	const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenSnackbar(false);
+	};
+
+	const showSnackbar = (severity: AlertColor, message: string) => {
+		setSnackbarMessage(message);
+		setSeverity(severity);
+		setOpenSnackbar(true);
+	}
 
 	const handleSuccess = (method: string, values: {}, status: string, newState: string) => {
 		// TODO: Implement actual handling
@@ -45,41 +59,7 @@ const UpdateNews: NextPage = (props) => {
 		status: news.status
 	};
 
-	const handleStatusUpdate = (newState: string) => {
-
-		const url = process.env.API_HOST + '/v1/news/' + news.id + '/' + newState;
-		const method = 'POST';
-		fetch(url, {
-			method: method,
-		})
-			.then(res => res.status)
-			.then(status => handleSuccess(method, {}, String(status), newState))
-			.catch(error => handleError(method, url, {}, error));
-	}
-
-	const handleDraft = () => {
-		handleStatusUpdate('draft');
-	}
-	const handleArchive = () => {
-		handleStatusUpdate('archive');
-	}
-	const handlePublish = () => {
-		handleStatusUpdate('published');
-	}
-	const handleDelete = () => {
-		const url = process.env.API_HOST + '/v1/news/' + news.id;
-		const method = 'DELETE';
-		fetch(url, {
-			method: method,
-		})
-			.then(res => res.status)
-			.then(status => handleSuccess(method, {}, String(status), 'deleted'))
-			.catch(error => handleError(method, url, {}, error));
-	}
-
-
 	const submitNewsPutRequest = (values: FormikValues) => {
-		console.log('submitNewsPutRequest start');
 		const url = process.env.API_HOST + '/v1/news';
 		const method = 'PUT';
 		fetch(url, {
@@ -104,24 +84,25 @@ const UpdateNews: NextPage = (props) => {
 						validationSchema={generateNewsFormValidationSchema()}
 						onSubmit={submitNewsPutRequest}
 						mode='edit'
+						showSnackbar={showSnackbar}
 					/>
-
-					{news.status !== 'archived' && (
-						<div data-testid='div-more-actions'>
-							<h2>More actions</h2>
-							<Button type="submit" fullWidth variant="outlined" sx={{mt: 2}} startIcon={<ModeIcon/>}
-											onClick={handleDraft}>Draft</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="secondary"
-											startIcon={<ArchiveTwoToneIcon/>} onClick={handleArchive}>Archive</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="error" startIcon={<DeleteIcon/>}
-											onClick={handleDelete}>Delete</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="success"
-											startIcon={<PostAddTwoToneIcon/>} onClick={handlePublish}>Publish</Button>
-						</div>
-					)}
 
 				</main>
 			</Container>
+
+			<Snackbar
+				anchorOrigin={{
+					vertical: 'top',
+					horizontal: 'center'
+				}}
+				open={openSnackbar}
+				autoHideDuration={6000}
+				onClose={handleCloseSnackbar}>
+				<Alert onClose={handleCloseSnackbar} severity={severity} sx={{width: '100%'}}>
+					{snackbarMessage}
+				</Alert>
+			</Snackbar>
+
 		</ThemeProvider>
 	);
 }
