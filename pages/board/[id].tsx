@@ -10,6 +10,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import NewsList from '../../components/newsList';
 import NoNews from '../../components/noNews';
+import withAuthentication from '../../src/withAuthentication';
 import LoggedInFooter from '../loggedInFooter';
 
 const theme = createTheme();
@@ -135,5 +136,4 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
 	return {props: {data, boardId: boardId} }
 }
 
-// TODO export default withAuthentication(Board);
-export default Board;
+export default withAuthentication(Board);

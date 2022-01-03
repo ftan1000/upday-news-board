@@ -8,10 +8,12 @@ import {useAuth} from '../../src/authContext';
 import {BoardList, NewsFormType} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
+import {NextPage} from 'next';
+import withAuthentication from '../../src/withAuthentication';
 
 const theme = createTheme();
 
-export default function CreateNews() {
+const CreateNews: NextPage = () => {
 
 	const {user} = useAuth();
 
@@ -63,3 +65,5 @@ export default function CreateNews() {
 		</ThemeProvider>
 	);
 }
+
+export default withAuthentication(CreateNews);
