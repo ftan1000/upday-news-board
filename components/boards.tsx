@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import {Board} from '../src/types';
+import Link from 'next/link';
 
 const Boards = (props: {
 	data: Board[];
@@ -22,14 +23,16 @@ const Boards = (props: {
 					<List>
 						{
 							data.map(values => (
-								<>
-									<ListItem disablePadding key={values.id}>
-										<ListItemButton component='a' href={'/board/'+ values.id}>
-											<ListItemText primary={values.name} />
+								<React.Fragment key={values.id}>
+									<ListItem disablePadding>
+										<ListItemButton>
+											<Link href={'/board/'+ values.id}>
+												<ListItemText primary={values.name} />
+											</Link>
 										</ListItemButton>
 									</ListItem>
 									<Divider />
-								</>
+								</React.Fragment>
 								)
 							)
 						}
