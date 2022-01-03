@@ -37,7 +37,7 @@ const Header = (props: HeaderProps) => {
 				<AppBar position="static">
 					<Toolbar>
 						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-							News Board
+							UPDAY News
 						</Typography>
 						{isAuthenticated && (
 							<div>
@@ -78,7 +78,7 @@ const Header = (props: HeaderProps) => {
 				{props.displayBreadcrumbs && (
 					<h1 data-testid="breadcrumbs">
 						<Link href="/" data-testid="breadcrumb-home">
-							<a>Home</a>
+							<a>Boards</a>
 						</Link>
 
 						{ props.boardId && (
