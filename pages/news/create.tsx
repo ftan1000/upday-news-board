@@ -5,46 +5,63 @@ import Header from '../../components/header';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {FormikValues} from 'formik';
 import {useAuth} from '../../src/authContext';
-import {BoardList, NewsFormType} from '../../src/types';
+import {BoardList} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
 import {NextPage} from 'next';
 import withAuthentication from '../../src/withAuthentication';
+import {News, NewsService} from '../../src/api/upday';
+import {AlertColor, Snackbar} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import {useRouter} from "next/router";
 
 const theme = createTheme();
 
 const CreateNews: NextPage = () => {
 
 	const {user} = useAuth();
+	const router = useRouter();
 
-	const handleSuccess = (values: {}, json: string) => {
-		// TODO: Implement actual handling
-		console.log('fetch POST successful', {body: values, response: json})
-	}
-	const handleError = (url: string, values: {}, error: {}) => {
-		// TODO: Implement actual error handling
-		console.log('error during fetch POST', {url: url, body: values, error: error})
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [openSnackbar, setOpenSnackbar] = React.useState(false);
+	const [severity, setSeverity] = React.useState<AlertColor>('success');
+
+	const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenSnackbar(false);
+	};
+
+	const showSnackbar = (severity: AlertColor, message: string) => {
+		setSnackbarMessage(message);
+		setSeverity(severity);
+		setOpenSnackbar(true);
 	}
 
-	const initialNewsFormData: NewsFormType = {
-		// TODO: use withAuthentication to guarantee that user is set
-		author: (user && user.email ? user.email : 'unknown@test.com'),
+
+	const handleSuccess = (news: News, json: News) => {
+		router.push('/news/' + json.id);
+	}
+
+	const initialNewsFormData: News = {
+		author: (user && user.email || 'unknown@test.com'),
 		title: '',
 		description: '',
 		imageURL: '',
 		boardId: Object.keys(BoardList).at(0) || 'en',
-		status: 'draft'
+		status: News.status.DRAFT
 	};
 
-	const submitNewsPostRequest = (values: FormikValues) => {
-		const url = process.env.API_HOST + '/v1/news';
-		fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(values)
-		})
-			.then(res => res.json())
-			.then(json => handleSuccess(values, json))
-			.catch(error => handleError(url, values, error));
+	const submitNewsPostRequest = async (values: FormikValues) => {
+
+		let result;
+		try{
+			result = await NewsService.addNews(values);
+			handleSuccess(values, result);
+		} catch (error){
+			showSnackbar('error', 'News could not be created');
+		}
 	}
 
 	return (
@@ -61,6 +78,16 @@ const CreateNews: NextPage = () => {
 						mode='create'
 					/>
 				</main>
+				<Snackbar
+					anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+					open={openSnackbar}
+					onClose={handleCloseSnackbar}
+					autoHideDuration={6000}
+				>
+					<Alert severity={severity} onClose={handleCloseSnackbar} sx={{width: '100%'}}>
+						{snackbarMessage}
+					</Alert>
+				</Snackbar>
 			</Container>
 		</ThemeProvider>
 	);
