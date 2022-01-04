@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-api": "openapi -i https://gitlab.com/thunpin/upday-task-fe/-/raw/master/api/swagger.yaml -o src/gen/openapi/card-service"
   },
   "dependencies": {
     "@emotion/cache": "latest",
@@ -24,6 +25,8 @@
     "@types/react": "^17.0.14",
     "eslint": "8.5.0",
     "eslint-config-next": "12.0.7",
+    "openapi-typescript": "^5.0.0",
+    "openapi-typescript-codegen": "^0.12.5",
     "typescript": "^4.3.5"
   }
 }
