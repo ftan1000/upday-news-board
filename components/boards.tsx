@@ -6,43 +6,51 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import {Board} from '../src/types';
 import Link from 'next/link';
+import {Box} from "@mui/material";
 
 const Boards = (props: {
-	data: Board[];
+  data?: Board[];
+  hasError?: boolean,
+  errorMessage?: string
 }) => {
 
-	const data: Board[] = props.data;
+  const data: Board[] = props.data || [];
 
-	return (
-		<>
-			<h1>Boards</h1>
-			<div>
-				{	data?
-					<>
-					Choose a board to view the board's news and manage the news:
-					<List>
-						{
-							data.map(values => (
-								<React.Fragment key={values.id}>
-									<ListItem disablePadding>
-										<ListItemButton>
-											<Link href={'/board/'+ values.id}>
-												<ListItemText primary={values.name} />
-											</Link>
-										</ListItemButton>
-									</ListItem>
-									<Divider />
-								</React.Fragment>
-								)
-							)
-						}
-					</List>
-					</>
-					: 'No boards available.'
-				}
-			</div>
-		</>
-	)
+  return (
+    <>
+      <h1>Boards</h1>
+      <div>
+        {data && data.length > 0 ?
+          <>
+            Choose a board to view the board's news and manage the news:
+            <List>
+              {
+                data.map(values => (
+                    <React.Fragment key={values.id}>
+                      <ListItem disablePadding>
+                        <ListItemButton>
+                          <Link href={'/board/' + values.id}>
+                            <ListItemText primary={values.name}/>
+                          </Link>
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider/>
+                    </React.Fragment>
+                  )
+                )
+              }
+            </List>
+          </>
+          : <Box sx={{margin: 2}}>
+            Boards could not be loaded!
+            {props.hasError && props.errorMessage && (
+              <pre>{props.errorMessage}</pre>
+            )}
+          </Box>
+        }
+      </div>
+    </>
+  )
 }
 
 export default Boards;

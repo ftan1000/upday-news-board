@@ -7,6 +7,7 @@ import withAuthentication from '../src/withAuthentication';
 import Header from '../components/header';
 import Boards from '../components/boards';
 import LoggedInFooter from './loggedInFooter';
+import {BoardService} from "../src/gen/openapi/card-service";
 
 const theme = createTheme();
 
@@ -18,7 +19,7 @@ const Home: NextPage = (props) => {
 				<CssBaseline/>
 				<Header displayBreadcrumbs={false} />
 				<main>
-					<Boards data={props.data}/>
+					<Boards {...props}/>
 				</main>
 				<LoggedInFooter />
 			</Container>
@@ -29,12 +30,18 @@ const Home: NextPage = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
-	const res = await fetch(process.env.API_HOST + '/v1/board')
-	const data = await res.json()
+	let data;
+	try {
+		data = await BoardService.getAllCountries();
+	}
+	catch (error){
 
-	if (!data) {
 		return {
-			notFound: true,
+			props: {
+				data: [],
+				hasError: true,
+				errorMessage: error.message || 'Unknown error'
+			}
 		}
 	}
 

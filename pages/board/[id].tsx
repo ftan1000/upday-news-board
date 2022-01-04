@@ -12,6 +12,8 @@ import NewsList from '../../components/newsList';
 import NoNews from '../../components/noNews';
 import withAuthentication from '../../src/withAuthentication';
 import LoggedInFooter from '../loggedInFooter';
+import {BoardService} from "../../src/gen/openapi/card-service";
+import {BoardList} from "../../src/types";
 
 const theme = createTheme();
 
@@ -89,15 +91,17 @@ const Board: NextPage = (props) => {
 								</TabPanel>
 							</>
 							:
-							<div>
+							<Box>
 								<h1>Error</h1>
+								<Box sx={{margin: 2}}>
 								{
 									(data && data.hasError && data.errorMessage ) ?
-										<code>{data.errorMessage}</code>
+										<pre>{data.errorMessage}</pre>
 										:
-										<div>No data received</div>
+										<b>No data received</b>
 								}
-							</div>
+								</Box>
+							</Box>
 					}
 				</main>
 				<LoggedInFooter />
@@ -109,16 +113,26 @@ const Board: NextPage = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
-	const boardId = params.id;
-	// Note for reviewer: Using params.id directly in fetchURL is a bit unsafe,
-	// but done here because of lack of time.
-	// Proper solution would be: params.id should be checked/mapped against a whitelist of valid boardIds.
-	const fetchURL = process.env.API_HOST + '/v1/board/' + boardId + '/news';
-	const res = await fetch(fetchURL)
+	let boardId: string = '';
+	if (params?.id){
+		boardId = Array.isArray(params.id)? params.id[0]: params.id;
+		boardId = Object.keys(BoardList).includes(boardId) ? boardId : '';
+	}
+
+	if (!boardId){
+		return {
+			props: {
+				data: {
+					hasError: true,
+					errorMessage: 'Invalid boardId'
+				}
+			}
+		}
+	}
 
 	let data;
 	try {
-		data = await res.json()
+		data = await BoardService.getNewsFromBoard(boardId);
 	} catch (error) {
 		data = {
 			hasError: true,
