@@ -12,7 +12,7 @@ import NewsList from '../../components/newsList';
 import NoNews from '../../components/noNews';
 import withAuthentication from '../../src/withAuthentication';
 import LoggedInFooter from '../loggedInFooter';
-import {BoardService} from "../../src/gen/openapi/card-service";
+import {BoardService} from "../../src/api/upday";
 import {BoardList} from "../../src/types";
 
 const theme = createTheme();

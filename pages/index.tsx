@@ -7,7 +7,7 @@ import withAuthentication from '../src/withAuthentication';
 import Header from '../components/header';
 import Boards from '../components/boards';
 import LoggedInFooter from './loggedInFooter';
-import {BoardService} from "../src/gen/openapi/card-service";
+import {BoardService} from "../src/api/upday";
 
 const theme = createTheme();
 
