@@ -5,7 +5,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-api": "openapi -i https://gitlab.com/thunpin/upday-task-fe/-/raw/master/api/swagger.yaml -o src/gen/openapi/card-service"
+    "generate-api": "openapi -i https://gitlab.com/thunpin/upday-task-fe/-/raw/master/api/swagger.yaml -o src/api/upday"
   },
   "dependencies": {
     "@emotion/cache": "latest",
