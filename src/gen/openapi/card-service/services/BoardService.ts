@@ -27,7 +27,9 @@ export class BoardService {
      * @throws ApiError
      */
     public static getNewsFromBoard(
-        boardId: number,
+        // In the original API version the boardId had the type 'number',
+        // which is wrong. Had to be changed to 'string'.
+        boardId: string,
     ): CancelablePromise<BoardNews> {
         return __request({
             method: 'GET',
