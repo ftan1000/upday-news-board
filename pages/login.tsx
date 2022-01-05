@@ -7,6 +7,7 @@ import LoginForm from '../components/loginForm';
 import {useAuth} from '../src/authContext';
 import {useRouter} from 'next/router';
 import {useEffect} from 'react';
+import Header from "../components/header";
 
 const theme = createTheme();
 
@@ -22,7 +23,10 @@ const Login: NextPage = () => {
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
-				<LoginForm />
+				<Header displayBreadcrumbs={false} />
+				<main>
+					<LoginForm />
+				</main>
 			</Container>
 		</ThemeProvider>
 	);

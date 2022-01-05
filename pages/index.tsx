@@ -21,7 +21,7 @@ const Home: NextPage = (props) => {
 				<main>
 					<Boards {...props}/>
 				</main>
-				<LoggedInFooter />
+				<LoggedInFooter hideGotoBoards={true} />
 			</Container>
 		</ThemeProvider>
 	);

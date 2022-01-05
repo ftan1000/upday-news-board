@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Box} from '@mui/material';
-import {News} from '../src/types';
 import Link from 'next/link';
+import {News} from "../src/api/upday";
 
 const NewsItem = (props: {
 	data: News;
@@ -32,15 +32,6 @@ const NewsItem = (props: {
 				</Box>
 
 				<Box>
-					{news.imageURL && (
-						<img src={news.imageURL} alt={news.title}/>
-					)}
-					{!news.imageURL && (
-						<em>No imageURL</em>
-					)}
-				</Box>
-
-				<Box>
 					{news.description && (
 						<Box component='div' sx={{whiteSpace: 'pre-line'}}>
 							{news.description.substring(0, DESCRIPTION_MAX_DISPLAY_LENGTH)}
@@ -49,6 +40,15 @@ const NewsItem = (props: {
 					)}
 					{!news.description && (
 						<em>No description</em>
+					)}
+				</Box>
+
+				<Box>
+					{news.imageURL && (
+						<img src={news.imageURL} alt={news.title}/>
+					)}
+					{!news.imageURL && (
+						<em>No imageURL</em>
 					)}
 				</Box>
 

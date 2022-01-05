@@ -33,8 +33,8 @@ const Header = (props: HeaderProps) => {
 
 	return (
 		<header>
-			<Box sx={{ flexGrow: 1 }}>
-				<AppBar position="static">
+			<Box>
+				<AppBar>
 					<Toolbar>
 						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 							UPDAY News

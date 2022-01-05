@@ -5,7 +5,7 @@ import Header from '../../components/header';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {FormikValues} from 'formik';
 import {GetServerSideProps, NextPage} from 'next';
-import {NewsFormType, StatusList} from '../../src/types';
+import {StatusList} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
 import Button from '@mui/material/Button';
@@ -13,114 +13,131 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeIcon from '@mui/icons-material/Mode';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
-import {useRouter} from 'next/router';
+import {News, NewsService} from '../../src/api/upday';
+import Grid from "@mui/material/Grid";
+import {Box} from "@mui/material";
+import WarningTwoToneIcon from "@mui/icons-material/WarningTwoTone";
+import { remark } from 'remark'
+import html from 'remark-html'
+import LoggedInFooter from "../loggedInFooter";
+import {useState} from "react";
 
 const theme = createTheme();
 
 const UpdateNews: NextPage = (props) => {
 
-	const router = useRouter()
+	const [news, setNews] = useState(props.data);
 
-	const news = props.data;
-	console.log('news',news);
-
-	const handleSuccess = (method: string, values: {}, status: string, newState: string) => {
-		// TODO: Implement actual handling
-		// Important: status may have the value 400 or 404
-		console.log('fetch successful', {method: method, body: values, status: status, newState: newState})
-		router.push('/news/' + news.id + '?newState=' + newState);
-	}
-	const handleError = (method: string, url: string, values: {}, error: {}) => {
-		// TODO: Implement actual error handling
-		console.log('error during fetch', {method: method, url: url, body: values, error: error})
+	const resetMessages = () => {
+		setSuccessMessage('');
+		setErrorMessage('');
 	}
 
-	const initialNewsFormData: NewsFormType = {
-		id: news.id,
-		author: news.author,
-		title: news.title,
-		description: news.description,
-		imageURL: news.imageURL || '',
-		boardId: news.boardId,
-		status: news.status
-	};
-
-	const handleStatusUpdate = (newState: string) => {
-
-		const url = process.env.API_HOST + '/v1/news/' + news.id + '/' + newState;
-		const method = 'POST';
-		fetch(url, {
-			method: method,
-		})
-			.then(res => res.status)
-			.then(status => handleSuccess(method, {}, String(status), newState))
-			.catch(error => handleError(method, url, {}, error));
+	const handleContentUpdate = async (values: FormikValues) => {
+		resetMessages();
+		NewsService.updateNews(values)
+			.then(() => setSuccessMessage('Content was successfully updated.'))
+			.catch(error => handleAPIError(error));
 	}
 
-	const handleDraft = () => {
-		handleStatusUpdate('draft');
-	}
-	const handleArchive = () => {
-		handleStatusUpdate('archive');
-	}
-	const handlePublish = () => {
-		handleStatusUpdate('published');
-	}
-	const handleDelete = () => {
-		const url = process.env.API_HOST + '/v1/news/' + news.id;
-		const method = 'DELETE';
-		fetch(url, {
-			method: method,
-		})
-			.then(res => res.status)
-			.then(status => handleSuccess(method, {}, String(status), 'deleted'))
-			.catch(error => handleError(method, url, {}, error));
+	const handleStatusUpdate = async (newState: News.status) => {
+		resetMessages();
+		let res;
+		try {
+			switch(newState){
+				case (News.status.DRAFT): res = await NewsService.drarftNews(news.id); break;
+				case (News.status.ARCHIVE): res = await NewsService.archiveNews(news.id); break;
+				case (News.status.PUBLISHED): res = await NewsService.publishNews(news.id); break;
+			}
+			news.status = newState;
+			setSuccessMessage('Successfully updated to new state '+news.status);
+		}
+		catch (error){
+			handleAPIError(error);
+		}
 	}
 
-
-	const submitNewsPutRequest = (values: FormikValues) => {
-		console.log('submitNewsPutRequest start');
-		const url = process.env.API_HOST + '/v1/news';
-		const method = 'PUT';
-		fetch(url, {
-			method: method,
-			body: JSON.stringify(values)
-		})
-			.then(res => res.json())
-			.then(json => handleSuccess(method, values, json, 'updated'))
-			.catch(error => handleError(method, url, values, error));
+	const handleDelete = async () => {
+		resetMessages();
+		NewsService.deleteNews(news.id)
+			.then(() => setSuccessMessage('News successfully deleted'))
+			.catch(error => handleAPIError(error));
+		setNews(null);
 	}
+
+	const handleAPIError = (error: any) => {
+		if (!error) return;
+
+		if (error.body){
+			let body = error.body.replaceAll('\\n','\n').replaceAll('\\t','');
+			setMarkupErrorMessage(body);
+		} else if (error.message){
+			setMarkupErrorMessage(error.message);
+		}
+	}
+
+	const setMarkupErrorMessage = async (errorMessage: string) => {
+		const processedContent = await remark()
+			.use(html)
+			.process(errorMessage)
+		setErrorMessage(processedContent.toString());
+	}
+
+	const [successMessage, setSuccessMessage] = React.useState('');
+	const [errorMessage, setErrorMessage] = React.useState('');
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="md">
 				<CssBaseline/>
-				<Header boardId={news.boardId} title={news.title}/>
+				<Header boardId={news?.boardId || ''} title={news?.title || ''}/>
 				<main>
-					<h6>Status: {StatusList[news.status]} | Author: {news.author}</h6>
+					{news && (
+						<h6>Status: {StatusList[news.status]} | Author: {news.author}</h6>
+					)}
 
-					<NewsForm
-						initialValues={initialNewsFormData}
-						validationSchema={generateNewsFormValidationSchema()}
-						onSubmit={submitNewsPutRequest}
-						mode='edit'
-					/>
+					{ successMessage && (
+						<Grid item xs={12}>
+							<Box sx={{marginBottom: 5, color: 'green'}}>
+								<div dangerouslySetInnerHTML={{ __html: successMessage }} />
+							</Box>
+						</Grid>
+					)}
 
-					{news.status !== 'archived' && (
+					{ errorMessage && (
+						<Grid item xs={12}>
+							<Box sx={{padding: 2, color: 'red', fontSize: '1.2em'}}>
+								<WarningTwoToneIcon /> Update failed<br />
+								<div dangerouslySetInnerHTML={{ __html: errorMessage }} />
+							</Box>
+						</Grid>
+					)}
+
+					{news && (
+						<NewsForm
+							initialValues={news}
+							validationSchema={generateNewsFormValidationSchema()}
+							onSubmit={handleContentUpdate}
+							mode='edit'
+						/>
+					)}
+
+					{news && news.status !== 'archived' && (
 						<div data-testid='div-more-actions'>
 							<h2>More actions</h2>
-							<Button type="submit" fullWidth variant="outlined" sx={{mt: 2}} startIcon={<ModeIcon/>}
-											onClick={handleDraft}>Draft</Button>
+							<Button fullWidth variant="outlined" sx={{mt: 2}} startIcon={<ModeIcon/>}
+											onClick={() => handleStatusUpdate(News.status.DRAFT)}>Draft</Button>
 							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="secondary"
-											startIcon={<ArchiveTwoToneIcon/>} onClick={handleArchive}>Archive</Button>
+											startIcon={<ArchiveTwoToneIcon/>} onClick={() => handleStatusUpdate(News.status.ARCHIVE)}>Archive</Button>
 							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="error" startIcon={<DeleteIcon/>}
 											onClick={handleDelete}>Delete</Button>
-							<Button type="submit" fullWidth variant="contained" sx={{mt: 2}} color="success"
-											startIcon={<PostAddTwoToneIcon/>} onClick={handlePublish}>Publish</Button>
+							<Button fullWidth variant="contained" sx={{mt: 2}} color="success"
+											startIcon={<PostAddTwoToneIcon/>} onClick={() => handleStatusUpdate(News.status.PUBLISHED)}>Publish</Button>
 						</div>
 					)}
 
 				</main>
+				<LoggedInFooter/>
 			</Container>
 		</ThemeProvider>
 	);
