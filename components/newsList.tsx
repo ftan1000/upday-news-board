@@ -1,6 +1,6 @@
 import * as React from 'react';
 import NewsItem from './newsItem';
-import {News} from '../src/types';
+import {News} from "../src/api/upday";
 
 const NewsList = (props: {
 	data: News[];

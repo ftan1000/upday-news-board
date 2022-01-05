@@ -1,11 +1,21 @@
 import * as React from 'react';
-import {Box} from '@mui/material';
-import CreateNewsLink from './news/createNewsLink';
+import CreateNewsButton from './news/createNewsButton';
+import GotoBoardsButton from "../components/gotoBoardsButton";
 
-export default function LoggedInFooter() {
+type Props = {
+	hideCreateNews?: boolean;
+	hideGotoBoards?: boolean;
+};
+export default function LoggedInFooter(props: Props) {
 	return (
-		<Box component='div'>
-			<CreateNewsLink />
-		</Box>
+		<>
+			{!props.hideCreateNews && <CreateNewsButton />}
+			{!props.hideGotoBoards && <GotoBoardsButton />}
+		</>
 	);
+};
+
+LoggedInFooter.defaultProps = {
+	hideCreateNews: false,
+	hideGotoBoards: false
 };

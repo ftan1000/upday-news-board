@@ -4,9 +4,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
-import {Board} from '../src/types';
 import Link from 'next/link';
-import {Box} from "@mui/material";
+import {Box} from '@mui/material';
+import {Board} from "../src/api/upday";
 
 const Boards = (props: {
   data?: Board[];
