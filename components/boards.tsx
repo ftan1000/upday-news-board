@@ -22,14 +22,14 @@ const Boards = (props: {
       <div>
         {data && data.length > 0 ?
           <>
-            Choose a board to view the board's news and manage the news:
+            Choose a board to view the board&apos;s news and manage the news:
             <List>
               {
                 data.map(values => (
                     <React.Fragment key={values.id}>
                       <ListItem disablePadding>
                         <ListItemButton>
-                          <Link href={'/board/' + values.id}>
+                          <Link href={'/board/' + values.id} passHref>
                             <ListItemText primary={values.name}/>
                           </Link>
                         </ListItemButton>

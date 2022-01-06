@@ -83,7 +83,7 @@ const Header = (props: HeaderProps) => {
 
 						{ props.boardId && (
 							<>
-								{' '}>{' '}
+								{' '}&gt;{' '}
 								<Link href={'/board/' + props.boardId} data-testid="breadcrumb-board">
 									<a>{BoardList[props.boardId]}</a>
 								</Link>
@@ -92,7 +92,7 @@ const Header = (props: HeaderProps) => {
 
 						{ props.title && (
 							<>
-								{' '}>{' '}
+								{' '}&gt;{' '}
 								<em data-testid="breadcrumb-home">{props.title}</em>
 							</>
 						)}
