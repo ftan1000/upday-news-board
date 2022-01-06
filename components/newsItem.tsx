@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Box} from '@mui/material';
 import Link from 'next/link';
 import {News} from "../src/api/upday";
+import Image from "next/image";
 
 const NewsItem = (props: {
 	data: News;
@@ -11,12 +12,13 @@ const NewsItem = (props: {
 
 	const news: News = props.data;
 
-	const formattedDate = new Intl.DateTimeFormat('default', {
+	const formattedDate = news.createdAt?
+		new Intl.DateTimeFormat('default', {
 		year: 'numeric', month: 'long', day: 'numeric',
 		hour: 'numeric', minute: 'numeric', second: 'numeric',
 		hour12: false,
 		timeZone: 'Europe/Berlin'
-	}).format(new Date(news.CreatedAt))
+	}).format(new Date(news.createdAt)) : '';
 
 	return (
 		<Box component='div' sx={{marginTop: 5}} key={news.id}>
@@ -45,7 +47,7 @@ const NewsItem = (props: {
 
 				<Box>
 					{news.imageURL && (
-						<img src={news.imageURL} alt={news.title}/>
+						<Image src={news.imageURL} alt={news.title}/>
 					)}
 					{!news.imageURL && (
 						<em>No imageURL</em>

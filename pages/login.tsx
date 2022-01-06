@@ -17,7 +17,7 @@ const Login: NextPage = () => {
 
 	useEffect(() => {
 		if (user && user.email) router.push("/");
-	}, [user]);
+	}, [user, router]);
 
 	return (
 		<ThemeProvider theme={theme}>
