@@ -4,6 +4,7 @@ import {Board} from "../../src/api/upday";
 import Boards from "../../components/boards";
 import {findByTestId} from "../../src/testHelpers";
 import {ListItemText} from "@mui/material";
+import renderer from "react-test-renderer";
 
 describe('Boards', () => {
 
@@ -14,6 +15,13 @@ describe('Boards', () => {
       ];
 
   const emptyData: Board[] = [];
+
+  it('renders snapshot', () => {
+    const props = { data };
+    const component = renderer.create(<Boards {...props} />);
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('correctly renders ListItemText components when data exists', () => {
 

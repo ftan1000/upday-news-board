@@ -4,8 +4,15 @@ import {shallow} from 'enzyme';
 import LoggedInFooter from '../../pages/loggedInFooter';
 import CreateNewsButton from '../../pages/news/createNewsButton';
 import GotoBoardsButton from '../../components/gotoBoardsButton';
+import renderer from 'react-test-renderer';
 
 describe('LoggedInFooter', () => {
+
+  it('renders snapshot', () => {
+    const component = renderer.create(<LoggedInFooter />);
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('contains expected components by default', () => {
     const wrapper = shallow(<LoggedInFooter/>);
