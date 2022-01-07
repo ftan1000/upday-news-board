@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Boards renders snapshot 1`] = `
+Array [
+  <h1>
+    Boards
+  </h1>,
+  <div>
+    Choose a board to view and manage the news:
+    <ul
+      className="MuiList-root MuiList-padding css-h4y409-MuiList-root"
+    >
+      <li
+        className="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+        disabled={false}
+      >
+        <div
+          className="MuiListItemButton-root MuiListItemButton-gutters MuiButtonBase-root css-cvhtoe-MuiButtonBase-root-MuiListItemButton-root"
+          onBlur={[Function]}
+          onContextMenu={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            data-testid="board-ListItemText-en"
+            href="/board/en"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            <span
+              className="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            >
+              England
+            </span>
+          </div>
+        </div>
+      </li>
+      <hr
+        className="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
+      />
+      <li
+        className="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+        disabled={false}
+      >
+        <div
+          className="MuiListItemButton-root MuiListItemButton-gutters MuiButtonBase-root css-cvhtoe-MuiButtonBase-root-MuiListItemButton-root"
+          onBlur={[Function]}
+          onContextMenu={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            data-testid="board-ListItemText-de"
+            href="/board/de"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            <span
+              className="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            >
+              Deutsch
+            </span>
+          </div>
+        </div>
+      </li>
+      <hr
+        className="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
+      />
+      <li
+        className="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+        disabled={false}
+      >
+        <div
+          className="MuiListItemButton-root MuiListItemButton-gutters MuiButtonBase-root css-cvhtoe-MuiButtonBase-root-MuiListItemButton-root"
+          onBlur={[Function]}
+          onContextMenu={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            data-testid="board-ListItemText-it"
+            href="/board/it"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            <span
+              className="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            >
+              Italiano
+            </span>
+          </div>
+        </div>
+      </li>
+      <hr
+        className="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
+      />
+    </ul>
+  </div>,
+]
+`;
