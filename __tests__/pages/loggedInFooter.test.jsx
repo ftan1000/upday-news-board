@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import LoggedInFooter from '../loggedInFooter';
-import CreateNewsButton from '../news/createNewsButton';
+import LoggedInFooter from '../../pages/loggedInFooter';
+import CreateNewsButton from '../../pages/news/createNewsButton';
 import GotoBoardsButton from '../../components/gotoBoardsButton';
 
 describe('LoggedInFooter', () => {

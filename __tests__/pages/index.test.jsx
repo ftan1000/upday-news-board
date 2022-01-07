@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Home from '../index';
+import Home from '../../pages';
 import Header from '../../components/header';
-import LoggedInFooter from '../loggedInFooter';
+import LoggedInFooter from '../../pages/loggedInFooter';
 import Boards from '../../components/boards';
 
 describe('Home', () => {
