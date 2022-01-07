@@ -34,6 +34,14 @@ const LoginForm = () => {
         alignItems: 'center',
       }}
     >
+      <Box sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
+        Log in to access the UPDAY news boards:
+      </Box>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           margin="normal"
