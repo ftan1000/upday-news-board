@@ -7,6 +7,7 @@ export type User = {
 type authContextType = {
 	user: User;
 	login: (user: User) => void;
+  refreshAuth: () => boolean;
 	logout: () => void;
 	isAuthenticated: boolean;
 };
@@ -14,6 +15,7 @@ type authContextType = {
 const authContextDefaultValues: authContextType = {
 	user: {},
 	login: () => {},
+  refreshAuth: () => false,
 	logout: () => {},
 	isAuthenticated: false,
 };
@@ -35,7 +37,21 @@ export function AuthProvider({children}: Props) {
 	const login = (user: User) => {
 		setAuthentication(true);
 		setUser({email: user.email});
+    if (typeof window !== "undefined") {
+      localStorage.setItem('email', user.email as string);
+    }
 	};
+
+  const refreshAuth = (): boolean => {
+    if (typeof window !== "undefined") {
+      const email = localStorage.getItem('email');
+      if (email) {
+        login({email: email});
+        return true;
+      }
+    }
+    return false;
+  };
 
 	const logout = () => {
 		setAuthentication(false);
@@ -45,6 +61,7 @@ export function AuthProvider({children}: Props) {
 	const value = {
 		user,
 		login,
+    refreshAuth: refreshAuth,
 		logout,
 		isAuthenticated,
 	};
