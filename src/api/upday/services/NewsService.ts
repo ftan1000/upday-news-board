@@ -42,7 +42,8 @@ export class NewsService {
      * @throws ApiError
      */
     public static updateNews(
-        body: Array<News>,
+        // Note (ftan): Original type of body was incorrectly Array<News>
+        body: News,
     ): CancelablePromise<News> {
         return __request({
             method: 'PUT',

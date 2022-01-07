@@ -3,7 +3,6 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../../components/header';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {FormikValues} from 'formik';
 import {GetServerSideProps, NextPage} from 'next';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
@@ -37,10 +36,16 @@ const UpdateNews: NextPage = (props: UpdateNewsProps) => {
     setErrorMessage('');
   }
 
-  const handleContentUpdate = async (values: FormikValues) => {
+  const handleContentUpdate = async (values: News) => {
     resetMessages();
-    const news: Array<News> = Array<News>(values);
-    NewsService.updateNews(news)
+    NewsService.updateNews({
+      id: values.id,
+      boardId: values.boardId,
+      author: values.author,
+      title: values.title,
+      description: values.description,
+      imageURL: values.imageURL
+    })
       .then(() => setSuccessMessage('Content was successfully updated.'))
       .catch(error => handleAPIError(error));
   }
