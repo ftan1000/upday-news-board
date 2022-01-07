@@ -56,6 +56,9 @@ export function AuthProvider({children}: Props) {
 	const logout = () => {
 		setAuthentication(false);
 		setUser({});
+    if (typeof window !== "undefined") {
+      localStorage.removeItem('email');
+    }
 	};
 
 	const value = {
