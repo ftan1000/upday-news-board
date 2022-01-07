@@ -8,11 +8,13 @@ import Link from 'next/link';
 import {Box} from '@mui/material';
 import {Board} from '../src/api/upday';
 
-const Boards = (props: {
+type BoardsProps = {
   data?: Board[];
   hasError?: boolean,
   errorMessage?: string
-}) => {
+};
+
+const Boards = (props: BoardsProps) => {
 
   const data: Board[] = props.data || [];
 
@@ -30,7 +32,7 @@ const Boards = (props: {
                     <ListItem disablePadding>
                       <ListItemButton>
                         <Link href={'/board/' + values.id} passHref>
-                          <ListItemText primary={values.name}/>
+                          <ListItemText primary={values.name} data-testid={'board-ListItemText-'+values.id}/>
                         </Link>
                       </ListItemButton>
                     </ListItem>
@@ -42,9 +44,14 @@ const Boards = (props: {
             </List>
           </>
           : <Box sx={{margin: 2}}>
-            Boards could not be loaded!
+            <Box data-testid="board-nodata-static-msg">
+              Boards could not be loaded!
+            </Box>
+
             {props.hasError && props.errorMessage && (
-              <pre>{props.errorMessage}</pre>
+              <Box data-testid="board-nodata-error-msg">
+                <pre>{props.errorMessage}</pre>
+              </Box>
             )}
           </Box>
         }
