@@ -12,7 +12,7 @@ export type News = {
     /**
      * date in UTC when the news was created
      */
-    createdAt?: string;
+    CreatedAt?: string;
     status?: News.status;
 }
 

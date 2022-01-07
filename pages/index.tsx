@@ -7,7 +7,7 @@ import withAuthentication from '../src/withAuthentication';
 import Header from '../components/header';
 import Boards from '../components/boards';
 import LoggedInFooter from './loggedInFooter';
-import {BoardService} from '../src/api/upday';
+import {ApiError, BoardService} from '../src/api/upday';
 
 const theme = createTheme();
 
@@ -33,13 +33,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
   let data;
   try {
     data = await BoardService.getAllCountries();
-  } catch (error){
+  } catch (error: ApiError | any){
 
     return {
       props: {
         data: [],
         hasError: true,
-        errorMessage: error.message || 'Unknown error'
+        errorMessage: error?.message || 'Unknown error'
       }
     }
   }

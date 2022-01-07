@@ -7,11 +7,13 @@ import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import {Box} from '@mui/material';
 import {Board} from '../src/api/upday';
+import {ReactNode} from 'react';
 
 type BoardsProps = {
   data?: Board[];
   hasError?: boolean,
   errorMessage?: string
+  children?: ReactNode;
 };
 
 const Boards = (props: BoardsProps) => {

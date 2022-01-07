@@ -9,7 +9,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
-import {BoardList} from '../src/types';
 
 type HeaderProps = {
 	title?: string;
@@ -80,15 +79,6 @@ const Header = (props: HeaderProps) => {
             <Link href="/" data-testid="breadcrumb-home">
               <a>Boards</a>
             </Link>
-
-            { props.boardId && (
-              <>
-                {' '}&gt;{' '}
-                <Link href={'/board/' + props.boardId} data-testid="breadcrumb-board">
-                  <a>{BoardList[props.boardId]}</a>
-                </Link>
-              </>
-            )}
 
             { props.title && (
               <>

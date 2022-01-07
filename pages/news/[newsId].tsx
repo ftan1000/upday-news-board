@@ -5,7 +5,6 @@ import Header from '../../components/header';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {FormikValues} from 'formik';
 import {GetServerSideProps, NextPage} from 'next';
-import {StatusList} from '../../src/types';
 import generateNewsFormValidationSchema from '../../src/newsFormValidationSchema';
 import NewsForm from '../../components/newsForm';
 import Button from '@mui/material/Button';
@@ -13,18 +12,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeIcon from '@mui/icons-material/Mode';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
-import {News, NewsService} from '../../src/api/upday';
+import {ApiError, News, NewsService} from '../../src/api/upday';
 import Grid from '@mui/material/Grid';
 import {Box} from '@mui/material';
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 import { remark } from 'remark'
 import html from 'remark-html'
 import LoggedInFooter from '../loggedInFooter';
-import {useState} from 'react';
+import {ReactNode, useState} from 'react';
 
 const theme = createTheme();
 
-const UpdateNews: NextPage = (props) => {
+type UpdateNewsProps = {
+  children?: ReactNode;
+  data?: any;
+};
+
+const UpdateNews: NextPage = (props: UpdateNewsProps) => {
 
   const [news, setNews] = useState(props.data);
 
@@ -35,7 +39,8 @@ const UpdateNews: NextPage = (props) => {
 
   const handleContentUpdate = async (values: FormikValues) => {
     resetMessages();
-    NewsService.updateNews(values)
+    const news: Array<News> = Array<News>(values);
+    NewsService.updateNews(news)
       .then(() => setSuccessMessage('Content was successfully updated.'))
       .catch(error => handleAPIError(error));
   }
@@ -92,7 +97,7 @@ const UpdateNews: NextPage = (props) => {
         <Header boardId={news?.boardId || ''} title={news?.title || ''}/>
         <main>
           {news && (
-            <h6>Status: {StatusList[news.status]} | Author: {news.author}</h6>
+            <h6>Status: {news.status as string} | Author: {news.author}</h6>
           )}
 
           { successMessage && (
@@ -144,14 +149,14 @@ const UpdateNews: NextPage = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
-  const res = await fetch(process.env.API_HOST + '/v1/news/' + params.newsId)
+  const res = await fetch(process.env.API_HOST + '/v1/news/' + params?.newsId)
   let data;
   try {
     data = await res.json()
-  } catch (error) {
+  } catch (error: ApiError | any) {
     data = {
       hasError: true,
-      errorMessage: error.message || 'Unknown error'
+      errorMessage: error?.message || 'Unknown error'
     };
     return {props: {data}}
   }

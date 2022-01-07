@@ -12,8 +12,9 @@ import NewsList from '../../components/newsList';
 import NoNews from '../../components/noNews';
 import withAuthentication from '../../src/withAuthentication';
 import LoggedInFooter from '../loggedInFooter';
-import {BoardService} from '../../src/api/upday';
+import {ApiError, BoardService} from '../../src/api/upday';
 import {BoardList} from '../../src/types';
+import {ReactNode} from 'react';
 
 const theme = createTheme();
 
@@ -43,7 +44,12 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const Board: NextPage = (props) => {
+type BoardProps = {
+  children?: ReactNode;
+  data?: any;
+};
+
+const Board: NextPage = (props: BoardProps) => {
 
   const data = props.data;
   const [selectedTabId, setSelectedTabId] = React.useState(0);
@@ -56,7 +62,7 @@ const Board: NextPage = (props) => {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="md">
         <CssBaseline/>
-        <Header boardId={props.boardId}/>
+        <Header/>
         <main>
           {
             data && !data.hasError ?
@@ -133,10 +139,10 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
   let data;
   try {
     data = await BoardService.getNewsFromBoard(boardId);
-  } catch (error) {
+  } catch (error: ApiError | any) {
     data = {
       hasError: true,
-      errorMessage: error.message || 'Unknown error'
+      errorMessage: error?.message || 'Unknown error'
     };
     return {props: {data}}
   }
