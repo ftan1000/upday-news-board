@@ -29,5 +29,5 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ### `yarn start`
 
-Runs the app in the production mode (`yarn start` needs to run prior to that).\
+Runs the app in the production mode (`yarn build` needs to run prior to that).\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
