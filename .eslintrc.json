@@ -1,0 +1,18 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "quotes": [1, "single", { "avoidEscape": true }],
+    "array-bracket-spacing": ["warn", "never"],
+    "brace-style": ["warn", "1tbs", { "allowSingleLine": false }],
+    "block-spacing": ["warn", "never"],
+    "comma-dangle": ["warn", "only-multiline"],
+    "comma-style": ["warn", "last"],
+    "comma-spacing": ["warn", { "before": false, "after": true }],
+    "indent": ["warn", 2],
+    "keyword-spacing": ["warn", { "before": true }],
+    "space-in-parens": ["warn", "never"],
+    "react/jsx-props-no-spreading": "off",
+    "import/no-cycle": 0,
+    "react/prop-types": 0 // We do not use prop types. We rely on TypeScript type definitions for component prop objects.
+  }
+}

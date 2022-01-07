@@ -6,7 +6,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import {Box} from '@mui/material';
-import {Board} from "../src/api/upday";
+import {Board} from '../src/api/upday';
 
 const Boards = (props: {
   data?: Board[];
@@ -26,17 +26,17 @@ const Boards = (props: {
             <List>
               {
                 data.map(values => (
-                    <React.Fragment key={values.id}>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <Link href={'/board/' + values.id} passHref>
-                            <ListItemText primary={values.name}/>
-                          </Link>
-                        </ListItemButton>
-                      </ListItem>
-                      <Divider/>
-                    </React.Fragment>
-                  )
+                  <React.Fragment key={values.id}>
+                    <ListItem disablePadding>
+                      <ListItemButton>
+                        <Link href={'/board/' + values.id} passHref>
+                          <ListItemText primary={values.name}/>
+                        </Link>
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider/>
+                  </React.Fragment>
+                )
                 )
               }
             </List>
