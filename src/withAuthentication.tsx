@@ -6,11 +6,16 @@ type withAuthenticationFn = (Component: FC) => FC;
 
 const withAuthentication: withAuthenticationFn = (Component) => {
 	const Authenticated: FC = (props): JSX.Element | null => {
-		const { isAuthenticated } = useAuth();
+		let { isAuthenticated, refreshAuth } = useAuth();
 
 		if (typeof window !== "undefined") {
-			const router = useRouter();
-			if (!isAuthenticated) router.push("/login");
+		  if (!isAuthenticated){
+        isAuthenticated = refreshAuth();
+      }
+			if (!isAuthenticated){
+        const router = useRouter();
+			  router.push("/login");
+      }
 		}
 
 		return isAuthenticated ? <Component {...props} /> : null;
