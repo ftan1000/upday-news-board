@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import LoggedInFooter from '../loggedInFooter';
+import LoggedInFooter from '../../pages/loggedInFooter';
 import Header from '../../components/header';
-import Login from '../login';
+import Login from '../../pages/login';
 import LoginForm from '../../components/loginForm';
 
 describe('Login', () => {
